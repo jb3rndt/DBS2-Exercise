@@ -9,6 +9,6 @@ public class DummyExerciseJava implements DummyExercise {
     @NotNull
     @Override
     public String getYourGroupIdentifier() {
-        throw new UnsupportedOperationException("return your group identifier here");
+        return "V";
     }
 }
