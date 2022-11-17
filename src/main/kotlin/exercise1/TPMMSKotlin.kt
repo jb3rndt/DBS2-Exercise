@@ -17,7 +17,6 @@ class TPMMSKotlin(manager: BlockManager, sortColumnIndex: Int) :
 
     override fun sort(relation: Relation, output: BlockOutput) {
         val size: Int = relation.estimatedSize
-        print("$size / ${blockManager.freeBlocks - 1}")
         val nLists: Int =
                 ceil(relation.estimatedSize / (blockManager.freeBlocks - 1).toDouble()).toInt()
         val listSize: Int = ceil(relation.estimatedSize / nLists.toDouble()).toInt()
@@ -28,8 +27,8 @@ class TPMMSKotlin(manager: BlockManager, sortColumnIndex: Int) :
         // □ Schreibe sortierte Teilstücke auf Festplatte zurück
         // □ Ergebnis: viele sortierte Teillisten (auf Festplatte)
         val lists = mutableListOf<MutableList<Block>>()
-        for (i in 1..nLists) {
-            var blockPointer = relation.iterator()
+        var blockPointer = relation.iterator()
+        for (i in 1..nLists-1) {
             var blocks = mutableListOf<Block>()
             while (blockManager.freeBlocks > 0 &&
                     blockPointer.hasNext() &&
@@ -79,7 +78,7 @@ class TPMMSKotlin(manager: BlockManager, sortColumnIndex: Int) :
                 //  )
                 if (relation.columns
                                 .getColumnComparator(sortColumnIndex)
-                                .compare(min.second, f.value) < 0
+                                .compare(min.second, f.value) == 0
                 )
                         min = f.index to f.value
             }
@@ -102,5 +101,7 @@ class TPMMSKotlin(manager: BlockManager, sortColumnIndex: Int) :
                 }
             }
         }
+        blockManager.release(outputBlock, false)
+        println(blockManager.usedBlocks)
     }
 }
