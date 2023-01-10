@@ -69,14 +69,14 @@ fun main() {
             NestedLoopEquiInnerJoin(blockManager, leftColumnIndex, rightColumnIndex)
         val hashBucketCount = 10
         val heij: JoinOperation =
-            HashEquiInnerJoinJava(blockManager, leftColumnIndex, rightColumnIndex)
+            HashEquiInnerJoinKotlin(blockManager, leftColumnIndex, rightColumnIndex)
 
-        val outputColumnDefinition = nleij.buildOutputColumns(leftInputRelation, rightInputRelation)
-        // val outputColumnDefinition = heij.buildOutputColumns(leftInputRelation, rightInputRelation);
+        // val outputColumnDefinition = nleij.buildOutputColumns(leftInputRelation, rightInputRelation)
+        val outputColumnDefinition = heij.buildOutputColumns(leftInputRelation, rightInputRelation);
         val outputRelation: Relation = createRelation(blockManager, outputColumnDefinition)
 
-        nleij.join(leftInputRelation, rightInputRelation, outputRelation)
-        // heij.join(inputRelation1, inputRelation2, outputRelation)
+        // nleij.join(leftInputRelation, rightInputRelation, outputRelation)
+        heij.join(leftInputRelation, rightInputRelation, outputRelation)
 
         println("OutputRelation:")
         outputRelation.printlnAllBlocks()
